@@ -15,13 +15,14 @@ class User(object):
     @classmethod
     def get_by_email(cls, email):
         data = Database.find_one("users", {"email": email})
+        #print("@ get_by_email: {}".format(data))
         if data is not None:
+            print("@ data is not none {}".format(type(data)))
             return cls(**data)
-        return None
 
     @classmethod
     def get_by_id(cls, _id):
-        data = Database.find_one("users", {"email": _id})
+        data = Database.find_one("users", {"_id": _id})
         if data is not None:
             return cls(**data)
 
@@ -29,8 +30,11 @@ class User(object):
     def login_valid(email, password):
         # Check whether a user's email matches the password they sent us.
         user = User.get_by_email(email)
+        print("@ login_valid")
         if user is not None:
             # check the password
+            print("@ login_valid pwd ={}".format(user.password))
+            print(user.password == password)
             return user.password == password
         return False
 
