@@ -11,6 +11,8 @@ class User(object):
     def __init__(self, email, password, _id=None):
         self.email = email
         self.password = password
+        # Previous version o fmy code had an error in the line below,
+        # I had in None not is none this made the code not work properly and not error.
         self._id = uuid.uuid4().hex if _id is None else _id
 
     @classmethod
