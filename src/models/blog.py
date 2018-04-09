@@ -24,7 +24,7 @@ class Blog(object):
     def get_posts(self):
         return Post.from_blog(self._id)
 
-    def save_to__mongo(self):
+    def save_to_mongo(self):
         Database.insert(collection='blogs',
                         data=self.json())
 

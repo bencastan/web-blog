@@ -15,9 +15,9 @@ class User(object):
     @classmethod
     def get_by_email(cls, email):
         data = Database.find_one("users", {"email": email})
-        #print("@ get_by_email: {}".format(data))
+        print("@ get_by_email: {}".format(data))
         if data is not None:
-            print("@ data is not none {}".format(type(data)))
+            print("@ data is not none user.py {}".format(type(data)))
             return cls(**data)
 
     @classmethod
@@ -28,14 +28,16 @@ class User(object):
 
     @staticmethod
     def login_valid(email, password):
-        # Check whether a user's email matches the password they sent us.
+        # Check whether a user's email matches the chrome
+        #  password they sent us.
         user = User.get_by_email(email)
-        print("@ login_valid")
+        print("@user.py, user returned line 32")
         if user is not None:
             # check the password
             print("@ login_valid pwd ={}".format(user.password))
             print(user.password == password)
             return user.password == password
+        print("None returned!! Oh dear.")
         return False
 
     @classmethod
