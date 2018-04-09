@@ -21,9 +21,7 @@ def initialize_database():
 def login_user():
     email = request.form['email']
     password = request.form['password']
-    print("@login_user {} , {}".format(email, password))
     if User.login_valid(email, password):
-        print("@ user_login_valid")
         User.login(email)
 
     return render_template("profile.html", email=session['email'])
