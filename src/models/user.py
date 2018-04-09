@@ -1,23 +1,22 @@
-import uuid
-
 import datetime
+import uuid
 from flask import session
 from src.common.database import Database
 from src.models.blog import Blog
+
+__author__ = 'bcastan'
 
 
 class User(object):
     def __init__(self, email, password, _id=None):
         self.email = email
         self.password = password
-        self._id = uuid.uuid4().hex if _id in None else _id
+        self._id = uuid.uuid4().hex if _id is None else _id
 
     @classmethod
     def get_by_email(cls, email):
         data = Database.find_one("users", {"email": email})
-        print("@ get_by_email: {}".format(data))
         if data is not None:
-            print("@ data is not none user.py {}".format(type(data)))
             return cls(**data)
 
     @classmethod
@@ -28,34 +27,29 @@ class User(object):
 
     @staticmethod
     def login_valid(email, password):
-        # Check whether a user's email matches the chrome
-        #  password they sent us.
+        # Check whether a user's email matches the password they sent us
         user = User.get_by_email(email)
-        print("@user.py, user returned line 32")
         if user is not None:
-            # check the password
-            print("@ login_valid pwd ={}".format(user.password))
-            print(user.password == password)
+            # Check the password
             return user.password == password
-        print("None returned!! Oh dear.")
         return False
 
     @classmethod
     def register(cls, email, password):
         user = cls.get_by_email(email)
         if user is None:
-            # User does not exist so need to create it
+            # User doesn't exist, so we can create it
             new_user = cls(email, password)
             new_user.save_to_mongo()
             session['email'] = email
             return True
         else:
-            # The user exist, so no need to register the user
+            # User exists :(
             return False
 
     @staticmethod
     def login(user_email):
-        # Login_valid has already been called
+        # login_valid has already been called
         session['email'] = user_email
 
     @staticmethod
@@ -66,17 +60,15 @@ class User(object):
         return Blog.find_by_author_id(self._id)
 
     def new_blog(self, title, description):
-        # author, title, description, author_id
         blog = Blog(author=self.email,
                     title=title,
                     description=description,
                     author_id=self._id)
 
-        blog.save_to__mongo()
+        blog.save_to_mongo()
 
     @staticmethod
     def new_post(blog_id, title, content, date=datetime.datetime.utcnow()):
-        # title, content, date=datetime.datetime.utcnow())
         blog = Blog.from_mongo(blog_id)
         blog.new_post(title=title,
                       content=content,
