@@ -59,6 +59,7 @@ class User(object):
         session['email'] = None
 
     def get_blogs(self):
+        # print("@user.get_blogs _id==: {}".format(self._id))
         return Blog.find_by_author_id(self._id)
 
     def new_blog(self, title, description):

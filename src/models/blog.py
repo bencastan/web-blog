@@ -39,12 +39,14 @@ class Blog(object):
 
     @classmethod
     def from_mongo(cls, id):
-        blog_data = Database.find_one(collection='blogs',
-                                      query={'_id': id})
+        blog_data = Database.find(collection='blogs',
+                                  query={'_id': id})
         return cls(**blog_data)
 
     @classmethod
     def find_by_author_id(cls, author_id):
-        blogs = Database.find_one(collection='blogs',
-                                  query={'author_id': author_id})
+        # print("@Blogs.find_by_author_id: {}".format(author_id))
+        blogs = Database.find(collection='blogs',
+                              query={'author_id': author_id})
+
         return [cls(**blog) for blog in blogs]
